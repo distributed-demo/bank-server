@@ -1,6 +1,7 @@
 package com.java4all.controller;
 
 import com.java4all.entity.Bank;
+import com.java4all.feign.CompanyServiceApi;
 import com.java4all.feign.UserServiceApi;
 import com.java4all.service.BankService;
 import java.math.BigDecimal;
@@ -34,12 +35,23 @@ public class BankController {
   private BankService bankServiceImpl;
   @Autowired
   private UserServiceApi userServiceApi;
+  @Autowired
+  private CompanyServiceApi companyServiceApi;
 
+  /**
+   * 模拟业务为：
+   * A->B,C
+   *
+   * @param id
+   * @param money
+   */
   @GetMapping("decreaseMoney")
   @Transactional
   public void decreaseMoney(Integer id,BigDecimal money){
     //feign调用   调用user-server给用户加钱
-    userServiceApi.increaseMoney(id,money);
+    userServiceApi.increaseMoney(id,money.divide(new BigDecimal(2)));
+    //feign调用   调用company-server给企业加钱
+    companyServiceApi.increaseMoney(id,money.divide(new BigDecimal(2)));
     //本地服务 给银行减钱
     int line = bankServiceImpl.decreaseMoney(id, money);
     log.info("修改行数为："+line);
