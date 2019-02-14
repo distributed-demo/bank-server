@@ -17,5 +17,13 @@ eureka:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.java4all.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
 
+ribbon:
+  ConnectTimeout: 1000
+  ReadTimeout: 15000
+  MaxAutoRetries: 0
 

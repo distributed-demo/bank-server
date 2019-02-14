@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -47,14 +48,15 @@ public class BankController {
    */
   @GetMapping("decreaseMoney")
   @Transactional
+  @ResponseBody
   public void decreaseMoney(Integer id,BigDecimal money){
-    //feign调用   调用user-server给用户加钱
-    userServiceApi.increaseMoney(id,money.divide(new BigDecimal(2)));
-    //feign调用   调用company-server给企业加钱
-    companyServiceApi.increaseMoney(id,money.divide(new BigDecimal(2)));
-    //本地服务 给银行减钱
-    int line = bankServiceImpl.decreaseMoney(id, money);
-    log.info("修改行数为："+line);
+      //feign调用   调用user-server给用户加钱
+      userServiceApi.increaseMoney(id,money.divide(new BigDecimal(2)));
+      //feign调用   调用company-server给企业加钱
+      companyServiceApi.increaseMoney(id,money.divide(new BigDecimal(2)));
+      //本地服务 给银行减钱
+      int line = bankServiceImpl.decreaseMoney(id, money);
+      log.info("修改行数为："+line);
   }
 
 }
