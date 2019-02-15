@@ -50,10 +50,8 @@ public class BankController {
   @Transactional
   @ResponseBody
   public void decreaseMoney(Integer id,BigDecimal money){
-      //feign调用   调用user-server给用户加钱
-      userServiceApi.increaseMoney(id,money.divide(new BigDecimal(2)));
       //feign调用   调用company-server给企业加钱
-      companyServiceApi.increaseMoney(id,money.divide(new BigDecimal(2)));
+      companyServiceApi.increaseMoney(id,money);
       //本地服务 给银行减钱
       int line = bankServiceImpl.decreaseMoney(id, money);
       log.info("修改行数为："+line);
